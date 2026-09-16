@@ -3,13 +3,9 @@ import {
   getEvents,
   setEvents,
   generateId,
-  addEvent as storageAddEvent,
-  updateEvent as storageUpdateEvent,
-  deleteEvent as storageDeleteEvent,
-  getEventsByDate,
-  getEventsByDateRange,
 } from '../lib/storage';
 import { calculateDailyDensity, analyzeDensityRange, findFreeSlots } from '../lib/density';
+import { getTodayStr } from '../lib/date';
 
 const CATEGORY_COLORS = {
   sekolah: '#0055ff',
@@ -29,8 +25,10 @@ function enrichEvent(event) {
 
 export function useEvents() {
   const [events, setEventsState] = useState(() => getEvents().map(enrichEvent));
-  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(() => getTodayStr());
 
+  // Single source of truth: state -> localStorage. Jangan tulis langsung
+  // ke storage di add/update/delete agar tidak terjadi lost-update.
   useEffect(() => {
     setEvents(events);
   }, [events]);
@@ -43,27 +41,31 @@ export function useEvents() {
       createdBy: 'user',
     };
     setEventsState(prev => [...prev, newEvent]);
-    storageAddEvent(newEvent);
     return newEvent;
   }, []);
 
   const updateEvent = useCallback((id, updates) => {
-    setEventsState(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e));
-    storageUpdateEvent(id, updates);
+    const { _delete, ...safeUpdates } = updates || {};
+    setEventsState(prev => prev.map(e => e.id === id ? { ...e, ...safeUpdates } : e));
   }, []);
 
   const deleteEvent = useCallback((id) => {
     setEventsState(prev => prev.filter(e => e.id !== id));
-    storageDeleteEvent(id);
   }, []);
 
   const getEventsForDate = useCallback((date) => {
-    return getEventsByDate(date).map(enrichEvent);
-  }, []);
+    return events
+      .filter(e => e.date === date)
+      .sort((a, b) => a.startTime.localeCompare(b.startTime))
+      .map(enrichEvent);
+  }, [events]);
 
   const getEventsForRange = useCallback((startDate, endDate) => {
-    return getEventsByDateRange(startDate, endDate).map(enrichEvent);
-  }, []);
+    return events
+      .filter(e => e.date >= startDate && e.date <= endDate)
+      .sort((a, b) => (a.date + a.startTime).localeCompare(b.date + b.startTime))
+      .map(enrichEvent);
+  }, [events]);
 
   const getDensityForDate = useCallback((date) => {
     return calculateDailyDensity(events, date);
@@ -85,18 +87,16 @@ export function useEvents() {
       createdBy: 'ai',
     };
     setEventsState(prev => [...prev, newEvent]);
-    storageAddEvent(newEvent);
     return newEvent;
   }, []);
 
   const updateEventFromAI = useCallback((id, fields) => {
-    setEventsState(prev => prev.map(e => e.id === id ? { ...e, ...fields } : e));
-    storageUpdateEvent(id, fields);
+    const { _delete, ...safeFields } = fields || {};
+    setEventsState(prev => prev.map(e => e.id === id ? { ...e, ...safeFields } : e));
   }, []);
 
   const deleteEventFromAI = useCallback((id) => {
     setEventsState(prev => prev.filter(e => e.id !== id));
-    storageDeleteEvent(id);
   }, []);
 
   return {

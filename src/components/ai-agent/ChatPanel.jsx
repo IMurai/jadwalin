@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import ChatBubble from './ChatBubble';
 import QuickActionChips from './QuickActionChips';
 
-export default function ChatPanel({ messages, isLoading, onSendMessage, onQuickAction }) {
+export default function ChatPanel({ messages, isLoading, error, onSendMessage, onQuickAction, onClear }) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -24,9 +24,9 @@ export default function ChatPanel({ messages, isLoading, onSendMessage, onQuickA
   };
 
   return (
-    <div className="bg-white border-3 border-ink shadow-brutal-xl p-4 flex-1 flex flex-col justify-between overflow-hidden panel-brutal">
+    <div className="bg-white border-[3px] border-ink shadow-brutal-xl p-4 flex-1 flex flex-col justify-between overflow-hidden min-h-[320px]" style={{ borderWidth: '3px' }}>
       {/* AI Agent Header */}
-      <div className="flex items-center justify-between pb-3 border-b-3 border-ink bg-surface-dim -m-4 mb-3 p-3.5">
+      <div className="flex items-center justify-between pb-3 border-b-[3px] border-ink bg-surface-dim -m-4 mb-3 p-3.5" style={{ borderBottomWidth: '3px' }}>
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-neo-blue border-2 border-ink shadow-brutal-sm flex items-center justify-center text-white font-mono font-black text-sm">
             AI
@@ -42,13 +42,19 @@ export default function ChatPanel({ messages, isLoading, onSendMessage, onQuickA
             </p>
           </div>
         </div>
-        <button className="w-7 h-7 bg-white border-2 border-ink text-ink font-bold flex items-center justify-center hover:bg-neo-yellow shadow-brutal-sm transition btn-brutal" title="Menu Opsi">
+        <button onClick={onClear} className="w-7 h-7 bg-white border-2 border-ink text-ink font-bold flex items-center justify-center hover:bg-neo-yellow shadow-brutal-sm transition" title="Hapus percakapan">
           ⋮
         </button>
       </div>
 
+      {error && (
+        <div className="mb-2 p-2 bg-red-50 border-2 border-neo-red text-[11px] font-mono font-bold text-ink">
+          ⚠️ {error}
+        </div>
+      )}
+
       {/* Chat History Stream */}
-      <div className="flex-1 overflow-y-auto py-2 space-y-3 pr-1 text-xs" ref={chatContainerRef}>
+      <div className="flex-1 overflow-y-auto py-2 space-y-3 pr-1 text-xs min-h-[160px]" ref={chatContainerRef}>
         {messages.length === 0 && (
           <div className="flex items-start gap-2">
             <div className="w-6 h-6 bg-neo-blue text-white border-2 border-ink shrink-0 font-mono font-bold text-[10px] flex items-center justify-center shadow-brutal-sm">
@@ -93,14 +99,14 @@ export default function ChatPanel({ messages, isLoading, onSendMessage, onQuickA
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="w-full pl-3 pr-12 py-2.5 text-xs font-sans font-medium bg-canvas text-ink placeholder-ink/50 border-2 border-ink focus:outline-none focus:bg-white shadow-brutal-sm input-brutal"
+            className="w-full pl-3 pr-12 py-2.5 text-xs font-sans font-medium bg-canvas text-ink placeholder-ink/50 border-2 border-ink focus:outline-none focus:bg-white shadow-brutal-sm"
             placeholder="Instruksikan AI, e.g. 'Atur meeting besok jam 10 pagi'..."
             disabled={isLoading}
           />
           <button
             type="submit"
             disabled={!inputValue.trim() || isLoading}
-            className="absolute right-1.5 p-1.5 bg-neo-yellow hover:bg-yellow-300 text-ink border-2 border-ink shadow-brutal-sm transition hover:scale-105 active:scale-95 btn-brutal"
+            className="absolute right-1.5 p-1.5 bg-neo-yellow hover:bg-yellow-300 text-ink border-2 border-ink shadow-brutal-sm transition hover:scale-105 active:scale-95"
             title="Kirim pesan"
           >
             <svg className="w-4 h-4 transform rotate-90 stroke-[2.5]" fill="currentColor" viewBox="0 0 20 20">

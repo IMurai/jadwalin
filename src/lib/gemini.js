@@ -1,4 +1,6 @@
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+const GEMINI_MODEL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_MODEL) || 'gemini-3.6-flash';
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const GEMINI_TIMEOUT_MS = 30000;
 
 const SYSTEM_PROMPT = `Anda adalah AI Schedule Agent untuk siswa ekstrakurikuler (futsal).
 Tugas Anda: bantu mengelola jadwal sekolah, futsal, belajar, dan main/istirahat.
@@ -100,23 +102,39 @@ const TOOLS_SCHEMA = [
   },
 ];
 
-export async function callGeminiAPI(apiKey, messages, availableTools, eventsContext) {
+export function buildApiContents(messages, eventsContext) {
   const contents = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
     { role: 'model', parts: [{ text: 'Siap! Apa yang bisa saya bantu untuk jadwal Anda hari ini?' }] },
-    ...messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }],
-    })),
   ];
 
   if (eventsContext) {
-    contents.splice(2, 0, {
+    contents.push({
       role: 'user',
       parts: [{ text: `Konteks jadwal terkini (${eventsContext.start} s.d. ${eventsContext.end}):\n${eventsContext.summary}` }],
     });
   }
 
+  for (const m of messages) {
+    // Dukung history API-native (functionCall / functionResponse) agar
+    // hasil tool tidak hilang di iterasi berikutnya.
+    if (m.parts) {
+      // Gemini API v3.6+ tidak support role 'function'.
+      // Function response harus dikirim sebagai role 'user'.
+      const apiRole = m.role === 'function' ? 'user' : m.role;
+      contents.push({ role: apiRole, parts: m.parts });
+    } else {
+      contents.push({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content || '' }],
+      });
+    }
+  }
+
+  return contents;
+}
+
+export async function callGeminiWithContents(apiKey, contents, availableTools) {
   const body = {
     contents,
     tools: [{ functionDeclarations: availableTools }],
@@ -126,11 +144,25 @@ export async function callGeminiAPI(apiKey, messages, availableTools, eventsCont
     },
   };
 
-  const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
+  let response;
+  try {
+    response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    if (err?.name === 'AbortError') {
+      throw new Error('Gemini API timeout (30 detik). Coba lagi.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
@@ -140,8 +172,13 @@ export async function callGeminiAPI(apiKey, messages, availableTools, eventsCont
   return response.json();
 }
 
+export async function callGeminiAPI(apiKey, messages, availableTools, eventsContext) {
+  const contents = buildApiContents(messages, eventsContext);
+  return callGeminiWithContents(apiKey, contents, availableTools);
+}
+
 export function buildEventsContext(events, dateStart, dateEnd) {
-  const filtered = events.filter(e => e.date >= dateStart && e.date <= dateEnd);
+  const filtered = (events || []).filter(e => e.date >= dateStart && e.date <= dateEnd);
   if (filtered.length === 0) return null;
 
   const byDate = {};
@@ -153,7 +190,7 @@ export function buildEventsContext(events, dateStart, dateEnd) {
   const summary = Object.entries(byDate)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([date, evs]) => {
-      const items = evs.map(e => `  - ${e.startTime}-${e.endTime} ${e.title} (${e.category})${e.location ? ` @ ${e.location}` : ''}`).join('\n');
+      const items = evs.map(e => `  - [${e.id}] ${e.startTime}-${e.endTime} ${e.title} (${e.category})${e.location ? ` @ ${e.location}` : ''}`).join('\n');
       return `${date}:\n${items}`;
     })
     .join('\n\n');

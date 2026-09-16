@@ -1,7 +1,7 @@
 const QUICK_ACTIONS = [
-  { label: 'Cari slot kosong', icon: '📅', action: 'find_slot' },
-  { label: 'Reschedule jadwal', icon: '⚡', action: 'reschedule' },
-  { label: 'Analisis kepadatan', icon: '📊', action: 'analyze' },
+  { label: 'Cari slot kosong', icon: '\uD83D\uDCC5', action: 'find_slot' },
+  { label: 'Reschedule jadwal', icon: '\u26A1', action: 'reschedule' },
+  { label: 'Analisis kepadatan', icon: '\uD83D\uDCCA', action: 'analyze' },
 ];
 
 export default function QuickActionChips({ onAction, disabled }) {
@@ -12,7 +12,7 @@ export default function QuickActionChips({ onAction, disabled }) {
           key={action.action}
           onClick={() => onAction(action.action)}
           disabled={disabled}
-          className="px-2 py-1 bg-white hover:bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink shrink-0 transition flex items-center gap-1 btn-brutal disabled:opacity-40 disabled:cursor-not-allowed"
+          className="px-2 py-1 bg-white hover:bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink shrink-0 transition flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <span>{action.icon}</span> {action.label}
         </button>

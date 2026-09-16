@@ -1,16 +1,30 @@
+function escapeHtml(text) {
+  return (text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export default function ChatBubble({ message }) {
   const { role, content, timestamp, toolCalls, isError } = message;
 
   const formatTime = (ts) => {
-    return new Date(ts).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    try {
+      return new Date(ts).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return '';
+    }
   };
 
   const renderContent = (text) => {
+    const safe = escapeHtml(text);
     return (
-      <div dangerouslySetInnerHTML={{ __html: text
+      <div dangerouslySetInnerHTML={{ __html: safe
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-        .replace(/`(.*?)`/g, '<code class="bg-neo-yellow px-1 font-mono text-xs">$1</code>')
+        .replace(/`(.*?)`/g, '<code class="bg-neo-yellow px-1 font-mono text-xs border border-ink">$1</code>')
         .replace(/\n/g, '<br/>')
       }} />
     );
@@ -20,7 +34,7 @@ export default function ChatBubble({ message }) {
     return (
       <div className="flex items-start justify-end gap-2">
         <div className="chat-bubble-user">
-          {content}
+          {escapeHtml(content)}
           <div className="flex justify-end mt-1 text-[9px] font-mono text-white/70">
             {formatTime(timestamp)}
           </div>
@@ -40,20 +54,20 @@ export default function ChatBubble({ message }) {
           <div className="mt-2 space-y-2">
             {toolCalls.map((tc, idx) => {
               if (tc.name === 'find_free_slot' && tc.result?.slots?.length > 0) {
+                const flatSlots = tc.result.slots.flatMap((slot) =>
+                  slot.slots ? slot.slots.map(s => ({ date: slot.date, ...s })) : [slot]
+                );
                 return (
                   <div key={idx} className="p-2 bg-white border-2 border-ink shadow-brutal-sm">
                     <p className="font-mono text-[10px] font-bold text-ink mb-1">Slot kosong ditemukan:</p>
-                    {tc.result.slots.map((slot, sIdx) => (
+                    {flatSlots.map((slot, sIdx) => (
                       <div key={sIdx} className="flex items-center justify-between p-2 bg-canvas border border-ink/50 mb-1">
                         <div>
-                          <span className="font-mono font-bold text-ink bg-neo-yellow px-1 text-xs">
+                          <span className="font-mono font-bold text-ink bg-neo-yellow px-1 text-xs border border-ink">
                             {slot.date ? `${slot.date} ` : ''}{slot.startTime} - {slot.endTime} WIB
                           </span>
-                          <p className="font-mono text-[9px] text-ink/70 font-bold mt-0.5">Bebas bentrok</p>
+                          <p className="font-mono text-[9px] text-ink/70 font-bold mt-0.5">Bebas bentrok — balas chat dengan &quot;booking {slot.date || ''} {slot.startTime}&quot; untuk menjadwalkan</p>
                         </div>
-                        <button className="px-3 py-1 bg-neo-mint hover:bg-emerald-400 text-ink border-2 border-ink font-headline font-black text-[11px] uppercase shadow-brutal-sm btn-brutal">
-                          Booking
-                        </button>
                       </div>
                     ))}
                   </div>
@@ -65,7 +79,11 @@ export default function ChatBubble({ message }) {
                     <p className="font-mono text-[10px] font-bold text-ink mb-1">Analisis Kepadatan:</p>
                     <div className="grid grid-cols-2 gap-1 text-[9px] font-mono">
                       {Object.entries(tc.result.density).map(([date, d]) => (
-                        <div key={date} className={`p-1.5 rounded border border-ink/50 ${d.color.fill} text-[${d.color.text}]`}>
+                        <div
+                          key={date}
+                          className="p-1.5 rounded border border-ink/50"
+                          style={{ backgroundColor: d.color?.fill || 'white', color: d.color?.text || '#1a1a1a' }}
+                        >
                           <div className="font-bold">{date}</div>
                           <div>{formatDensityLabel(d.level)} ({d.hours} jam)</div>
                         </div>
@@ -79,7 +97,7 @@ export default function ChatBubble({ message }) {
                   <div key={idx} className="p-2 bg-white border-2 border-ink shadow-brutal-sm max-h-48 overflow-y-auto">
                     <p className="font-mono text-[10px] font-bold text-ink mb-1">Jadwal:</p>
                     {tc.result.schedule.map((e, i) => (
-                      <div key={i} className="text-[10px] font-mono mb-1">
+                      <div key={i} className="text-[10px] font-mono mb-1 border-b border-ink/20 pb-1">
                         {e.date} {e.startTime}-{e.endTime} {e.title} ({e.category})
                       </div>
                     ))}
@@ -93,7 +111,7 @@ export default function ChatBubble({ message }) {
         <div className="flex justify-between mt-2 text-[9px] font-mono text-ink/70">
           <span>{formatTime(timestamp)}</span>
           {toolCalls && toolCalls.length > 0 && (
-            <span className="bg-neo-yellow px-1 border border-ink">Tool: {toolCalls.map(t => t.name).join(', ')}</span>
+            <span className="bg-neo-yellow px-1 border border-ink font-bold">Tool: {toolCalls.map(t => t.name).join(', ')}</span>
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
 
 @theme {
   --color-surface: #f5f0e8;
@@ -41,10 +41,16 @@ html {
 
 body {
   min-height: 100vh;
+  background-color: var(--color-surface);
   background-image: 
     linear-gradient(to right, rgba(26, 26, 26, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(26, 26, 26, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+::selection {
+  background-color: var(--color-neo-yellow);
+  color: var(--color-ink);
 }
 
 ::-webkit-scrollbar {
@@ -62,18 +68,12 @@ body {
   background: #FFE600;
 }
 
-.grid-bg {
-  background-size: 24px 24px;
-  background-image: 
-    linear-gradient(to right, rgba(26, 26, 26, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(26, 26, 26, 0.05) 1px, transparent 1px);
-}
-
 @utility text-balance {
   text-wrap: balance;
 }
 
 @utility btn-brutal {
+  padding: 0.5rem 1rem;
   border-width: 2px;
   border-color: var(--color-ink);
   font-family: var(--font-headline);
@@ -116,6 +116,7 @@ body {
 }
 
 @utility card-brutal {
+  padding: 0.75rem;
   border-width: 2px;
   border-color: var(--color-ink);
   box-shadow: var(--shadow-brutal);
@@ -123,6 +124,7 @@ body {
 }
 
 @utility panel-brutal {
+  padding: 1rem;
   border-width: 3px;
   border-color: var(--color-ink);
   box-shadow: var(--shadow-brutal-xl);
@@ -145,8 +147,7 @@ body {
 @utility mini-cal-day {
   width: 2rem;
   height: 2rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
   border-radius: 9999px;
   display: flex;
   align-items: center;
@@ -162,7 +163,7 @@ body {
   transform: scale(1.05);
 }
 @utility mini-cal-day-empty {
-  color: var(--color-ink) / 60%;
+  color: rgba(26, 26, 26, 0.6);
 }
 @utility mini-cal-day-empty-hover {
   background-color: var(--color-surface-dim);
@@ -184,6 +185,7 @@ body {
   color: var(--color-ink);
   max-width: 90%;
   font-family: var(--font-sans);
+  font-weight: 500;
   line-height: 1.4;
 }
 

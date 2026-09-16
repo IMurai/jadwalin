@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
-import { format, startOfMonth, addMonths, subMonths, parseISO } from 'date-fns';
+import { useState } from 'react';
+import { format } from 'date-fns';
 import { useEvents } from './hooks/useEvents';
 import { useGeminiAgent } from './hooks/useGeminiAgent';
 import WeekView from './components/calendar/WeekView';
 import MonthMiniCalendar from './components/calendar/MonthMiniCalendar';
 import ChatPanel from './components/ai-agent/ChatPanel';
+import { getTodayStr, addDaysStr } from './lib/date';
 
 function App() {
   const {
@@ -28,7 +29,9 @@ function App() {
   const {
     messages,
     isLoading,
+    error,
     sendMessage,
+    clearMessages,
   } = useGeminiAgent({
     events,
     addEventFromAI,
@@ -40,10 +43,8 @@ function App() {
   });
 
   const handleQuickAction = (action) => {
-    const today = new Date().toISOString().split('T')[0];
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    const nextWeekStr = nextWeek.toISOString().split('T')[0];
+    const today = getTodayStr();
+    const nextWeekStr = addDaysStr(today, 7);
 
     switch (action) {
       case 'find_slot':
@@ -60,7 +61,7 @@ function App() {
 
   const handleDateSelect = (dateStr) => {
     setSelectedDate(dateStr);
-    const weekStart = startOfMonth(parseISO(dateStr));
+    setCurrentMonth(dateStr.slice(0, 7));
   };
 
   const handleMonthChange = (date) => {
@@ -68,22 +69,23 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-surface grid-bg selection-highlight">
-      <main className="relative z-10 w-full p-3 lg:p-5 max-w-[1920px] mx-auto min-h-screen flex flex-col gap-4">
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 flex-1 min-h-[calc(100vh-4rem)] overflow-hidden w-full">
-          {/* Left Column - Main Calendar */}
-          <WeekView
-            events={events}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            onAddEvent={addEvent}
-            onUpdateEvent={updateEvent}
-            onDeleteEvent={deleteEvent}
-            getDensityForDate={getDensityForDate}
-          />
+    <div className="min-h-screen bg-surface selection-highlight">
+      <main className="relative z-10 p-3 lg:p-5 max-w-[1920px] mx-auto h-screen flex flex-col gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 flex-1 h-[calc(100vh-2rem)] overflow-hidden">
+          {/* Left Column - Main Calendar Workspace */}
+          <section className="xl:col-span-8 2xl:col-span-9 flex flex-col h-full bg-canvas border-[3px] border-ink shadow-brutal-xl rounded-none p-4 lg:p-6 relative overflow-hidden">
+            <WeekView
+              events={events}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              onAddEvent={addEvent}
+              onUpdateEvent={updateEvent}
+              onDeleteEvent={deleteEvent}
+            />
+          </section>
 
           {/* Right Column - Mini Calendar & AI Agent */}
-          <aside className="xl:col-span-4 2xl:col-span-3 flex flex-col gap-4 min-h-0 overflow-hidden w-full">
+          <aside className="xl:col-span-4 2xl:col-span-3 flex flex-col gap-4 h-full overflow-hidden">
             <MonthMiniCalendar
               currentMonth={currentMonth}
               onMonthChange={handleMonthChange}
@@ -94,8 +96,10 @@ function App() {
             <ChatPanel
               messages={messages}
               isLoading={isLoading}
+              error={error}
               onSendMessage={sendMessage}
               onQuickAction={handleQuickAction}
+              onClear={clearMessages}
             />
           </aside>
         </div>

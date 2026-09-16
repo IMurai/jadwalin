@@ -10,11 +10,22 @@ export function getEvents() {
 }
 
 export function setEvents(events) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+  } catch (err) {
+    console.error('Gagal menyimpan event ke localStorage:', err);
+  }
 }
 
 export function generateId() {
-  return crypto.randomUUID();
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+  } catch {
+    // fallback di bawah
+  }
+  return `evt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export function addEvent(event) {

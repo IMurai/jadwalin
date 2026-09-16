@@ -1,4 +1,4 @@
-import { getEventsByDate } from './storage';
+import { toLocalDateStr, parseLocalDateStr, toMinutes, toTimeStr } from './date';
 
 export const DENSITY_LEVELS = {
   KOSONG: 'KOSONG',
@@ -22,9 +22,10 @@ export const DENSITY_THRESHOLDS = {
 };
 
 export function calculateDurationMinutes(startTime, endTime) {
-  const [sh, sm] = startTime.split(':').map(Number);
-  const [eh, em] = endTime.split(':').map(Number);
-  return (eh * 60 + em) - (sh * 60 + sm);
+  const s = toMinutes(startTime);
+  const e = toMinutes(endTime);
+  if (Number.isNaN(s) || Number.isNaN(e)) return 0;
+  return e - s;
 }
 
 export function hasTimeConflict(events) {
@@ -38,7 +39,7 @@ export function hasTimeConflict(events) {
 }
 
 export function calculateDailyDensity(events, date) {
-  const dayEvents = getEventsByDate(date);
+  const dayEvents = (events || []).filter(e => e.date === date);
   const totalMinutes = dayEvents.reduce((sum, e) => sum + calculateDurationMinutes(e.startTime, e.endTime), 0);
   const totalHours = totalMinutes / 60;
   const hasConflict = hasTimeConflict(dayEvents);
@@ -69,12 +70,17 @@ export function calculateDailyDensity(events, date) {
 
 export function analyzeDensityRange(events, startDate, endDate) {
   const results = {};
-  const current = new Date(startDate);
-  const end = new Date(endDate);
+  const current = parseLocalDateStr(startDate);
+  const end = parseLocalDateStr(endDate);
 
-  while (current <= end) {
-    const dateStr = current.toISOString().split('T')[0];
-    const dayEvents = events.filter(e => e.date === dateStr);
+  // Guard tanggal invalid agar tidak infinite loop
+  if (Number.isNaN(current.getTime()) || Number.isNaN(end.getTime())) return results;
+
+  let guard = 0;
+  while (current <= end && guard < 367) {
+    guard += 1;
+    const dateStr = toLocalDateStr(current);
+    const dayEvents = (events || []).filter(e => e.date === dateStr);
     const totalMinutes = dayEvents.reduce((sum, e) => sum + calculateDurationMinutes(e.startTime, e.endTime), 0);
     const totalHours = totalMinutes / 60;
     const hasConflict = hasTimeConflict(dayEvents);
@@ -102,39 +108,41 @@ export function analyzeDensityRange(events, startDate, endDate) {
 }
 
 export function findFreeSlots(events, date, durationMinutes, afterTime = '06:00', beforeTime = '22:00') {
-  const dayEvents = getEventsByDate(date).sort((a, b) => a.startTime.localeCompare(b.startTime));
+  const dayEvents = (events || [])
+    .filter(e => e.date === date)
+    .sort((a, b) => a.startTime.localeCompare(b.startTime));
   const slots = [];
 
-  const [afterH, afterM] = afterTime.split(':').map(Number);
-  const [beforeH, beforeM] = beforeTime.split(':').map(Number);
-  const dayStart = afterH * 60 + afterM;
-  const dayEnd = beforeH * 60 + beforeM;
+  const dayStart = toMinutes(afterTime);
+  const dayEnd = toMinutes(beforeTime);
+  if (Number.isNaN(dayStart) || Number.isNaN(dayEnd) || dayEnd <= dayStart) return slots;
+  if (!durationMinutes || durationMinutes <= 0) return slots;
 
   let currentTime = dayStart;
 
   for (const event of dayEvents) {
-    const [startH, startM] = event.startTime.split(':').map(Number);
-    const eventStart = startH * 60 + startM;
+    const eventStart = toMinutes(event.startTime);
+    const eventEnd = toMinutes(event.endTime);
+    if (Number.isNaN(eventStart) || Number.isNaN(eventEnd)) continue;
 
     if (eventStart - currentTime >= durationMinutes) {
       const slotStart = currentTime;
       const slotEnd = currentTime + durationMinutes;
       slots.push({
-        startTime: `${String(Math.floor(slotStart / 60)).padStart(2, '0')}:${String(slotStart % 60).padStart(2, '0')}`,
-        endTime: `${String(Math.floor(slotEnd / 60)).padStart(2, '0')}:${String(slotEnd % 60).padStart(2, '0')}`,
+        startTime: toTimeStr(slotStart),
+        endTime: toTimeStr(slotEnd),
       });
     }
 
-    const [endH, endM] = event.endTime.split(':').map(Number);
-    currentTime = Math.max(currentTime, endH * 60 + endM);
+    currentTime = Math.max(currentTime, eventEnd);
   }
 
   if (dayEnd - currentTime >= durationMinutes) {
     const slotStart = currentTime;
     const slotEnd = currentTime + durationMinutes;
     slots.push({
-      startTime: `${String(Math.floor(slotStart / 60)).padStart(2, '0')}:${String(slotStart % 60).padStart(2, '0')}`,
-      endTime: `${String(Math.floor(slotEnd / 60)).padStart(2, '0')}:${String(slotEnd % 60).padStart(2, '0')}`,
+      startTime: toTimeStr(slotStart),
+      endTime: toTimeStr(slotEnd),
     });
   }
 
