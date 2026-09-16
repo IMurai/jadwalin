@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Calendar Pro - Bauhaus &amp; Neo-Brutalism Edition</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Space Grotesk & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#f5f0e8",
+            "surface-dim": "#e8e3da",
+            "canvas": "#faf7f2",
+            "ink": "#1a1a1a",
+            "neo-yellow": "#FFE600",
+            "neo-blue": "#0055ff",
+            "neo-red": "#FF4D4D",
+            "neo-mint": "#00E599",
+            "neo-purple": "#B388FF",
+            "neo-peach": "#FFAE73",
+            "outline": "#1a1a1a",
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            headline: ['"Space Grotesk"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+          },
+          boxShadow: {
+            'brutal': '4px 4px 0px 0px #1a1a1a',
+            'brutal-sm': '2px 2px 0px 0px #1a1a1a',
+            'brutal-lg': '6px 6px 0px 0px #1a1a1a',
+            'brutal-xl': '8px 8px 0px 0px #1a1a1a',
+            'brutal-reverse': '-4px 4px 0px 0px #1a1a1a',
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    /* Custom Neo-Brutalist scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e8e3da;
+      border-left: 2px solid #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FFE600;
+    }
+    
+    .grid-bg {
+      background-size: 24px 24px;
+      background-image: linear-gradient(to right, rgba(26, 26, 26, 0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(26, 26, 26, 0.05) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-[#f5f0e8] text-ink min-h-screen font-sans antialiased selection:bg-neo-yellow selection:text-ink grid-bg">
+<!-- BEGIN: Main Application Container -->
+<main class="relative z-10 p-3 lg:p-5 max-w-[1920px] mx-auto h-screen flex flex-col gap-4">
+<!-- BEGIN: Desktop Layout Wrapper (2 Columns) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-5 flex-1 h-[calc(100vh-2rem)] overflow-hidden">
+<!-- ============================================================ -->
+<!-- KOLOM KIRI / AREA UTAMA (Main Calendar Workspace: 8 Cols)   -->
+<!-- ============================================================ -->
+<section class="xl:col-span-8 2xl:col-span-9 flex flex-col h-full bg-[#faf7f2] border-3 border-ink shadow-brutal-xl rounded-none p-4 lg:p-6 relative overflow-hidden" data-purpose="calendar-main-workspace" style="border-width: 3px;">
+<!-- Top Decorative Bauhaus Header Tag -->
+<div class="flex items-center justify-between pb-3 mb-2 border-b-2 border-ink text-xs font-mono font-bold tracking-widest uppercase">
+<span class="bg-neo-yellow px-2 py-0.5 border-2 border-ink shadow-brutal-sm flex items-center gap-1.5">
+<span class="w-2 h-2 bg-ink inline-block"></span>
+          SYS.CALENDAR // BAUHAUS EDITION
+        </span>
+<span class="text-ink/60">AUTOSYNC: COOKIE_STORAGE_ACTIVE</span>
+</div>
+<!-- BEGIN: Main Header Toolbar -->
+<header class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-3 border-ink" data-purpose="calendar-header-toolbar" style="border-bottom-width: 3px;">
+<!-- Month/Year & Navigation -->
+<div class="flex items-center flex-wrap gap-4">
+<div class="flex items-center gap-3">
+<span class="p-2.5 bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink">
+<!-- Calendar Icon -->
+<svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</span>
+<div>
+<div class="flex items-center gap-2">
+<h1 class="text-2xl lg:text-3xl font-headline font-extrabold tracking-tight text-ink uppercase">
+                  Desember, 2024
+                </h1>
+<span class="text-xs px-2 py-0.5 bg-neo-blue text-white font-mono font-bold border-2 border-ink shadow-brutal-sm">
+                  W42
+                </span>
+</div>
+<p class="text-xs font-mono font-bold text-ink/70 uppercase">Pekan ke-3 • 16 Des - 22 Des 2024</p>
+</div>
+</div>
+<!-- Date Navigation (< Today >) -->
+<div class="flex items-center bg-white border-2 border-ink shadow-brutal-sm p-0.5">
+<button class="p-1.5 text-ink hover:bg-neo-yellow transition-all border-r-2 border-ink" title="Pekan Sebelumnya">
+<svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button class="px-3.5 py-1.5 text-xs font-headline font-bold uppercase text-ink hover:bg-neo-yellow transition-all">
+              Hari Ini
+            </button>
+<button class="p-1.5 text-ink hover:bg-neo-yellow transition-all border-l-2 border-ink" title="Pekan Berikutnya">
+<svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- View Switcher & Action Buttons -->
+<div class="flex items-center flex-wrap gap-3">
+<!-- Category Filter Pills -->
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-ink shadow-brutal-sm text-xs font-headline font-bold">
+<span class="inline-block w-3 h-3 bg-neo-blue border border-ink"></span> Kerja
+            <span class="mx-1 text-ink/30">|</span>
+<span class="inline-block w-3 h-3 bg-neo-purple border border-ink"></span> Proyek
+            <span class="mx-1 text-ink/30">|</span>
+<span class="inline-block w-3 h-3 bg-neo-peach border border-ink"></span> Pribadi
+          </div>
+<!-- View Toggle: Bulan, Minggu, Hari -->
+<div class="bg-white border-2 border-ink shadow-brutal-sm flex items-center text-xs font-headline font-bold">
+<button class="px-3 py-1.5 text-ink hover:bg-surface-dim transition-colors">Bulan</button>
+<button class="px-4 py-1.5 bg-ink text-white border-x-2 border-ink">Minggu</button>
+<button class="px-3 py-1.5 text-ink hover:bg-surface-dim transition-colors">Hari</button>
+</div>
+<!-- Add Event CTA Button -->
+<button class="flex items-center gap-2 px-4 py-2 bg-neo-yellow text-ink border-2 border-ink shadow-brutal font-headline font-extrabold text-xs uppercase tracking-wide transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-brutal-sm active:translate-x-1 active:translate-y-1" id="open-modal-btn">
+<svg class="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Tambah Jadwal</span>
+</button>
+</div>
+</header>
+<!-- END: Main Header Toolbar -->
+<!-- BEGIN: Weekly Calendar Grid Container -->
+<div class="flex-1 flex flex-col overflow-hidden mt-3" data-purpose="weekly-calendar-grid">
+<!-- Days of Week Header Row -->
+<div class="grid grid-cols-8 text-center pb-2.5 border-b-2 border-ink items-stretch gap-1 bg-[#eee9e0] p-1 border-2 border-ink">
+<!-- Time Column Header -->
+<div class="flex items-center justify-center font-mono font-bold text-xs uppercase text-ink bg-white border border-ink">
+            WIB
+          </div>
+<!-- Minggu 16 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Minggu</span>
+<span class="text-base font-headline font-black text-ink">16</span>
+</div>
+<!-- Senin 17 (Aktif / Hari Ini) -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-neo-yellow border-2 border-ink shadow-brutal-sm">
+<span class="text-[11px] font-headline font-black uppercase text-ink">Senin</span>
+<span class="text-lg font-headline font-black text-ink">17</span>
+<span class="text-[9px] font-mono font-bold bg-ink text-neo-yellow px-1 mt-0.5">HARI INI</span>
+</div>
+<!-- Selasa 18 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Selasa</span>
+<span class="text-base font-headline font-black text-ink">18</span>
+</div>
+<!-- Rabu 19 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Rabu</span>
+<span class="text-base font-headline font-black text-ink">19</span>
+</div>
+<!-- Kamis 20 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Kamis</span>
+<span class="text-base font-headline font-black text-ink">20</span>
+</div>
+<!-- Jumat 21 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Jumat</span>
+<span class="text-base font-headline font-black text-ink">21</span>
+</div>
+<!-- Sabtu 22 -->
+<div class="flex flex-col items-center justify-center p-1.5 bg-white border border-ink">
+<span class="text-[11px] font-headline font-bold uppercase text-ink/70">Sabtu</span>
+<span class="text-base font-headline font-black text-ink">22</span>
+</div>
+</div>
+<!-- Time Grid with Scrollable Schedule -->
+<div class="flex-1 overflow-y-auto pr-1 relative divide-y-2 divide-ink/20 border-x-2 border-b-2 border-ink bg-white">
+<!-- Time Row: 06:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              06:00
+            </div>
+<!-- Sun 16: Jogging & Cardio -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-mint border-2 border-ink shadow-brutal-sm p-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+<span class="font-mono text-[9px] font-bold uppercase bg-ink text-white px-1">06:00-07:15</span>
+<h4 class="font-headline text-xs font-extrabold text-ink leading-tight mt-1 truncate">Jogging &amp; Cardio</h4>
+<p class="text-[10px] font-bold text-ink/80 mt-0.5 truncate">📍 Gelora Park</p>
+</div>
+</div>
+<!-- Mon 17: Sync Tim Mobile -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-[#7dd3fc] border-2 border-ink shadow-brutal-sm p-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+<div class="flex justify-between items-start">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">06:00-07:30</span>
+<span class="w-3 h-3 bg-neo-red border border-ink"></span>
+</div>
+<h4 class="font-headline text-xs font-extrabold text-ink leading-tight mt-1 truncate">Sync Tim Mobile</h4>
+<div class="flex items-center justify-between mt-1 text-[9px] font-mono font-bold">
+<span>GMeet</span>
+<span class="bg-white border border-ink px-1">R+D</span>
+</div>
+</div>
+</div>
+<!-- Tue 18: Add Slot -->
+<div class="p-1 border-r border-ink/10">
+<button class="w-full h-full border-2 border-dashed border-ink/40 bg-[#f9f9f8] hover:bg-neo-yellow/30 hover:border-ink flex items-center justify-center font-headline font-bold text-xs text-ink/70 transition">
+                + Jadwal
+              </button>
+</div>
+<!-- Wed 19 -->
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Thu 20 -->
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Fri 21 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-white border-2 border-ink p-1.5 shadow-brutal-sm">
+<span class="font-mono text-[9px] font-bold text-ink">06:30-07:30</span>
+<p class="font-headline text-xs font-bold text-ink truncate">Meditasi Yoga</p>
+</div>
+</div>
+<!-- Sat 22 -->
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 07:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              07:00
+            </div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Mon 17: Desain Onboarding -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-neo-purple border-2 border-ink shadow-brutal-sm p-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">07:30-08:45</span>
+<h4 class="font-headline text-xs font-extrabold text-ink leading-tight mt-1 truncate">Desain Onboarding</h4>
+<p class="font-mono text-[9px] font-bold text-ink/80 mt-0.5">Figma Review v2.4</p>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Wed 19: Client Kickoff -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-peach border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">07:00-08:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">Client Kickoff</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 08:00 -->
+<div class="grid grid-cols-8 min-h-[92px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              08:00
+            </div>
+<!-- Sun 16 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-[#fca5a5] border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">08:00-09:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">Brunch Keluarga</h4>
+</div>
+</div>
+<!-- Mon 17: Sprint Planning AI -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-neo-yellow border-2 border-ink shadow-brutal p-2 cursor-pointer hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+<div class="flex justify-between items-center">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">08:00-10:00</span>
+<span class="bg-neo-red text-white text-[8px] font-mono font-bold px-1 border border-ink">PRIORITAS</span>
+</div>
+<h4 class="font-headline text-xs font-black text-ink leading-tight mt-1 truncate">Sprint Planning AI</h4>
+<p class="font-mono text-[9px] font-bold text-ink/80 mt-0.5 truncate">Semua Tim Tech</p>
+</div>
+</div>
+<!-- Tue 18 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-peach border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">08:00-09:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">Design Session</h4>
+<span class="font-mono text-[9px] font-semibold text-ink">UI Workspace</span>
+</div>
+</div>
+<!-- Wed 19 -->
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Thu 20 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-mint border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">08:30-09:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">1-on-1 Mentoring</h4>
+</div>
+</div>
+<!-- Fri 21 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-[#fca5a5] border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">08:30-10:00</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">Design Website</h4>
+</div>
+</div>
+<!-- Sat 22 -->
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 09:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              09:00
+            </div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Mon 17 -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-neo-blue text-white border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-white text-ink px-1">09:00-10:30</span>
+<h4 class="font-headline text-xs font-extrabold truncate mt-1">Dev Review API</h4>
+</div>
+</div>
+<!-- Tue 18 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-white border-2 border-ink p-2">
+<span class="font-mono text-[9px] font-bold text-ink">09:40-10:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate">Design Review</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 10:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              10:00
+            </div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Mon 17 -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-neo-purple border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">10:45-12:00</span>
+<h4 class="font-headline text-xs font-extrabold text-ink truncate mt-1">Proyek Kalender AI</h4>
+<span class="font-mono text-[9px] text-ink font-bold">Client Brief</span>
+</div>
+</div>
+<!-- Tue 18 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-[#fca5a5] border-2 border-ink p-2 shadow-brutal-sm">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">10:50-12:00</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate mt-1">Onboarding Meet</h4>
+</div>
+</div>
+<!-- Wed 19 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-[#7dd3fc] border-2 border-ink p-2 shadow-brutal-sm">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">10:00-11:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate mt-1">AI Model Pitch</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 11:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              11:00
+            </div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-mint border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">11:00-12:30</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate mt-1">Weekly Wrap-up</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1"></div>
+</div>
+<!-- Time Row: 12:00 (Lunch Time) -->
+<div class="grid grid-cols-8 min-h-[64px] border-b-2 border-ink bg-[#FFE600]/25">
+<div class="text-right pr-3 font-mono text-xs font-extrabold text-ink border-r-2 border-ink pt-2 bg-neo-yellow">
+              12:00
+            </div>
+<div class="col-span-7 flex items-center px-4">
+<div class="w-full border-2 border-dashed border-ink p-1.5 bg-white flex items-center justify-between font-headline font-extrabold text-xs text-ink uppercase">
+<span class="flex items-center gap-2">
+<span class="w-3 h-3 bg-neo-red inline-block border border-ink"></span>
+                  🥪 Istirahat Siang &amp; Recharge (Bauhaus Break)
+                </span>
+<span class="font-mono text-[10px] bg-ink text-neo-yellow px-2 py-0.5">SLOT OTOMATIS DIBLOKIR</span>
+</div>
+</div>
+</div>
+<!-- Time Row: 13:00 -->
+<div class="grid grid-cols-8 min-h-[86px] border-b-2 border-ink/10 relative hover:bg-[#faf7f2] transition-colors">
+<div class="text-right pr-3 font-mono text-xs font-bold text-ink border-r-2 border-ink pt-2 bg-[#f2ede5]">
+              13:00
+            </div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Mon 17 -->
+<div class="p-1 border-r border-ink/10 bg-neo-yellow/10">
+<div class="h-full bg-neo-peach border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">13:00-14:15</span>
+<h4 class="font-headline text-xs font-extrabold text-ink truncate mt-1">Review Q4 Budget</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<!-- Wed 19 -->
+<div class="p-1 border-r border-ink/10">
+<div class="h-full bg-neo-purple border-2 border-ink shadow-brutal-sm p-2">
+<span class="font-mono text-[9px] font-bold bg-ink text-white px-1">13:30-15:00</span>
+<h4 class="font-headline text-xs font-bold text-ink truncate mt-1">Deep Work Coding</h4>
+</div>
+</div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1 border-r border-ink/10"></div>
+<div class="p-1"></div>
+</div>
+</div>
+</div>
+<!-- END: Weekly Calendar Grid Container -->
+<!-- ============================================================ -->
+<!-- BEGIN: Floating Event Modal Popover (Neo-Brutalist Bauhaus) -->
+<!-- ============================================================ -->
+<aside class="absolute right-6 top-20 w-80 sm:w-96 bg-white border-3 border-ink shadow-brutal-xl p-5 z-30 transition-all duration-200" data-purpose="floating-event-dialog" id="event-modal" style="border-width: 3px;">
+<!-- Modal Header -->
+<div class="flex items-center justify-between pb-3 border-b-3 border-ink bg-neo-yellow -m-5 mb-4 p-4" style="border-bottom-width: 3px;">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 bg-neo-red border-2 border-ink inline-block"></span>
+<span class="text-xs font-headline font-black uppercase tracking-wider text-ink">Jadwal Baru / Edit</span>
+</div>
+<button class="w-7 h-7 bg-white border-2 border-ink font-black text-ink hover:bg-neo-red hover:text-white transition flex items-center justify-center shadow-brutal-sm" id="close-modal-btn">
+            ✕
+          </button>
+</div>
+<!-- Form Content -->
+<form class="space-y-3 pt-1" onsubmit="event.preventDefault();">
+<!-- Title Input -->
+<div>
+<label class="block text-[11px] font-mono font-bold uppercase text-ink mb-1">Judul Agenda</label>
+<input class="w-full px-3 py-2 text-xs font-headline font-bold bg-[#faf7f2] border-2 border-ink text-ink placeholder-ink/40 focus:bg-white focus:outline-none focus:ring-0 shadow-brutal-sm" type="text" value="Meet with Jonson Rider"/>
+</div>
+<!-- Date Selector Field -->
+<div class="flex items-center gap-2 px-3 py-2 bg-[#eee9e0] border-2 border-ink text-xs font-headline font-bold text-ink shadow-brutal-sm">
+<svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Selasa, 18 Desember 2024</span>
+</div>
+<!-- Time Slots Pickers -->
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center justify-between px-3 py-2 bg-white border-2 border-ink text-xs font-mono font-bold text-ink shadow-brutal-sm">
+<span>06:00 WIB</span>
+<span>▼</span>
+</div>
+<div class="flex items-center justify-between px-3 py-2 bg-white border-2 border-ink text-xs font-mono font-bold text-ink shadow-brutal-sm">
+<span>07:00 WIB</span>
+<span>▼</span>
+</div>
+</div>
+<!-- Location Input -->
+<div>
+<label class="block text-[11px] font-mono font-bold uppercase text-ink mb-1">Lokasi</label>
+<div class="flex items-center gap-2 px-3 py-2 bg-white border-2 border-ink shadow-brutal-sm">
+<span class="text-sm font-bold">📍</span>
+<input class="bg-transparent border-0 p-0 text-xs font-headline font-bold text-ink focus:ring-0 w-full" type="text" value="Park Lane Office &amp; Meet Room 3"/>
+</div>
+</div>
+<!-- Categories Chips -->
+<div>
+<span class="text-[11px] font-mono font-bold uppercase text-ink block mb-1.5">Label Kategori:</span>
+<div class="flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 bg-neo-purple border-2 border-ink shadow-brutal-sm text-ink text-[11px] font-headline font-bold" type="button">Desain</button>
+<button class="px-2.5 py-1 bg-neo-peach border-2 border-ink shadow-brutal-sm text-ink text-[11px] font-headline font-bold" type="button">Personal project</button>
+<button class="px-2.5 py-1 bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink text-[11px] font-headline font-bold" type="button">Developer task</button>
+</div>
+</div>
+<!-- Collaborators & Actions -->
+<div class="pt-3 border-t-2 border-ink flex items-center justify-between">
+<div class="flex items-center -space-x-1.5">
+<div class="w-7 h-7 bg-neo-yellow border-2 border-ink text-[10px] font-mono font-bold text-ink flex items-center justify-center">JR</div>
+<div class="w-7 h-7 bg-neo-blue border-2 border-ink text-[10px] font-mono font-bold text-white flex items-center justify-center">AL</div>
+<div class="w-7 h-7 bg-neo-mint border-2 border-ink text-[10px] font-mono font-bold text-ink flex items-center justify-center">SN</div>
+<button class="w-7 h-7 bg-white border-2 border-ink font-bold text-xs flex items-center justify-center text-ink hover:bg-surface-dim" type="button">+</button>
+</div>
+<!-- Save CTA -->
+<button class="px-4 py-2 bg-neo-blue hover:bg-blue-700 text-white font-headline font-black text-xs uppercase border-2 border-ink shadow-brutal hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-brutal-sm transition" type="button">
+              Simpan Jadwal
+            </button>
+</div>
+</form>
+</aside>
+<!-- END: Floating Event Modal Popover -->
+</section>
+<!-- END: Kolom Kiri -->
+<!-- ============================================================ -->
+<!-- KOLOM KANAN (Right Sidebar: Mini Calendar & AI Agent)       -->
+<!-- ============================================================ -->
+<aside class="xl:col-span-4 2xl:col-span-3 flex flex-col gap-4 h-full overflow-hidden" data-purpose="right-sidebar">
+<!-- BEGIN: Bagian Atas - Mini Kalender Interaktif Heatmap Kepadatan -->
+<div class="bg-white border-3 border-ink shadow-brutal-xl p-4 flex flex-col" data-purpose="mini-calendar-container" style="border-width: 3px;">
+<!-- Mini Calendar Header -->
+<div class="flex items-center justify-between mb-2.5 pb-2 border-b-2 border-ink">
+<div>
+<h3 class="font-headline font-black text-base text-ink uppercase tracking-tight">Desember 2024</h3>
+<p class="font-mono text-[10px] font-bold text-ink/70 uppercase">Analisis Kepadatan Jadwal Harian</p>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 bg-[#faf7f2] border-2 border-ink text-ink hover:bg-neo-yellow shadow-brutal-sm transition">
+<svg class="w-3.5 h-3.5 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+<button class="p-1 bg-[#faf7f2] border-2 border-ink text-ink hover:bg-neo-yellow shadow-brutal-sm transition">
+<svg class="w-3.5 h-3.5 stroke-[3]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+</div>
+<!-- Mini Calendar Days Names -->
+<div class="grid grid-cols-7 gap-1 text-center font-mono text-[11px] font-bold text-ink bg-surface-dim p-1 border-2 border-ink mb-2">
+<span>Mn</span><span>Sn</span><span>Sl</span><span>Rb</span><span>Km</span><span>Jm</span><span>Sb</span>
+</div>
+<!-- Mini Calendar Grid Days (Neo-Brutalist Circular Heatmap) -->
+<div class="grid grid-cols-7 gap-1.5 text-center text-xs font-mono font-bold">
+<!-- Bulan Lalu -->
+<span class="p-1 text-ink/30 flex items-center justify-center">26</span>
+<span class="p-1 text-ink/30 flex items-center justify-center">27</span>
+<span class="p-1 text-ink/30 flex items-center justify-center">28</span>
+<span class="p-1 text-ink/30 flex items-center justify-center">29</span>
+<span class="p-1 text-ink/30 flex items-center justify-center">30</span>
+<!-- 1 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">1</button>
+<!-- 2 Des: Ringan (Mint) -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="2 Kegiatan">2</button>
+<!-- 3 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">3</button>
+<!-- 4 Des: Sedang (Yellow) -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="3 Kegiatan">4</button>
+<!-- 5 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">5</button>
+<!-- 6 Des: Padat (Red) -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-red text-white border-2 border-ink shadow-brutal-sm hover:scale-105 transition" title="5+ Kegiatan">6</button>
+<!-- 7 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="1 Kegiatan">7</button>
+<!-- 8 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">8</button>
+<!-- 9 Des: Sedang -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="4 Kegiatan">9</button>
+<!-- 10 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">10</button>
+<!-- 11 Des: Padat -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-red text-white border-2 border-ink shadow-brutal-sm hover:scale-105 transition" title="6 Kegiatan">11</button>
+<!-- 12 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="2 Kegiatan">12</button>
+<!-- 13 Des: Sedang -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition" title="3 Kegiatan">13</button>
+<!-- 14 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">14</button>
+<!-- 15 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">15</button>
+<!-- 16 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">16</button>
+<!-- 17 Des: Hari ini (Active Bold Ring + Padat Red) -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-red text-white border-3 border-ink ring-2 ring-neo-yellow shadow-brutal-sm relative" style="border-width: 3px;" title="Hari Ini • 5 Kegiatan (Padat)">
+            17
+            <span class="w-1.5 h-1.5 rounded-full bg-neo-yellow border border-ink absolute -bottom-1"></span>
+</button>
+<!-- 18 Des: Sedang -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">18</button>
+<!-- 19 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">19</button>
+<!-- 20 Des: Ringan -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">20</button>
+<!-- 21 Des: Sedang -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink hover:scale-105 transition">21</button>
+<!-- 22 Des: Kosong -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60 hover:bg-surface-dim transition">22</button>
+<!-- 23 Des: Sedang -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink">23</button>
+<!-- 24 Des: Padat -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-red text-white border-2 border-ink shadow-brutal-sm">24</button>
+<!-- 25 Des -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60">25</button>
+<!-- 26 Des -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-mint border-2 border-ink shadow-brutal-sm text-ink">26</button>
+<!-- 27 Des -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink">27</button>
+<!-- 28 Des -->
+<button class="w-8 h-8 mx-auto rounded-full flex items-center justify-center border-2 border-ink text-ink/60">28</button>
+</div>
+<!-- Heatmap Legend -->
+<div class="mt-3 pt-2 border-t-2 border-ink flex items-center justify-between font-mono text-[10px] text-ink font-bold">
+<span>Kepadatan:</span>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border-2 border-ink bg-white inline-block"></span> Kosong</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border border-ink bg-neo-mint inline-block"></span> Ringan</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border border-ink bg-neo-yellow inline-block"></span> Sedang</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full border border-ink bg-neo-red inline-block"></span> Padat</span>
+</div>
+</div>
+</div>
+<!-- END: Mini Kalender Interaktif -->
+<!-- ============================================================ -->
+<!-- BEGIN: Bagian Bawah - AI Calendar Assistant Chat (Bauhaus)   -->
+<!-- ============================================================ -->
+<div class="bg-white border-3 border-ink shadow-brutal-xl p-4 flex-1 flex flex-col justify-between overflow-hidden" data-purpose="ai-assistant-chat-panel" style="border-width: 3px;">
+<!-- AI Agent Header -->
+<div class="flex items-center justify-between pb-3 border-b-3 border-ink bg-surface-dim -m-4 mb-3 p-3.5" style="border-bottom-width: 3px;">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 bg-neo-blue border-2 border-ink shadow-brutal-sm flex items-center justify-center text-white font-mono font-black text-sm">
+              AI
+            </div>
+<div>
+<h4 class="font-headline font-black text-xs text-ink uppercase flex items-center gap-1.5">
+                AI Schedule Agent
+                <span class="bg-neo-yellow text-ink border border-ink px-1 font-mono text-[9px] font-bold">PRO</span>
+</h4>
+<p class="font-mono text-[10px] font-bold text-ink/80 flex items-center gap-1">
+<span class="w-2 h-2 bg-neo-mint border border-ink inline-block"></span>
+                Siap membantu kelola waktu Anda
+              </p>
+</div>
+</div>
+<button class="w-7 h-7 bg-white border-2 border-ink text-ink font-bold flex items-center justify-center hover:bg-neo-yellow shadow-brutal-sm transition" title="Menu Opsi">
+            ⋮
+          </button>
+</div>
+<!-- Chat History Stream -->
+<div class="flex-1 overflow-y-auto py-2 space-y-3 pr-1 text-xs" data-purpose="chat-messages-container" id="chat-stream">
+<!-- AI Message Bubble 1 -->
+<div class="flex items-start gap-2">
+<div class="w-6 h-6 bg-neo-blue text-white border-2 border-ink shrink-0 font-mono font-bold text-[10px] flex items-center justify-center shadow-brutal-sm">
+              AI
+            </div>
+<div class="p-3 bg-[#faf7f2] border-2 border-ink shadow-brutal-sm text-ink max-w-[90%] font-sans font-medium leading-snug">
+              Halo! Jadwal Anda hari ini (<span class="font-headline font-black underline decoration-neo-red decoration-2">Senin, 17 Des</span>) cukup padat antara jam <span class="bg-neo-yellow px-1 border border-ink font-mono font-bold">08:00 - 12:00</span>.
+              <div class="mt-2 text-ink/80 font-normal">
+                Ingin saya bantu jadwalkan sesi fokus 45 menit di sore hari untuk menghindari burnout?
+              </div>
+</div>
+</div>
+<!-- User Reply Bubble -->
+<div class="flex items-start justify-end gap-2">
+<div class="p-3 bg-neo-blue text-white border-2 border-ink shadow-brutal-sm max-w-[85%] font-headline font-bold leading-snug text-xs">
+              Bisa carikan slot kosong setelah jam 14:00 untuk review project kalender?
+            </div>
+</div>
+<!-- AI Response Bubble 2 -->
+<div class="flex items-start gap-2">
+<div class="w-6 h-6 bg-neo-blue text-white border-2 border-ink shrink-0 font-mono font-bold text-[10px] flex items-center justify-center shadow-brutal-sm">
+              AI
+            </div>
+<div class="p-3 bg-[#faf7f2] border-2 border-ink shadow-brutal-sm text-ink max-w-[90%] font-sans leading-snug">
+              Tentu! Anda memiliki slot terbaik pada:
+              <div class="mt-2 p-2 bg-white border-2 border-ink shadow-brutal-sm flex items-center justify-between">
+<div>
+<span class="font-mono font-bold text-ink bg-neo-yellow px-1 text-xs">14:30 - 15:30 WIB</span>
+<p class="font-mono text-[9px] text-ink/70 font-bold mt-0.5">Bebas bentrok rapat lain</p>
+</div>
+<button class="px-3 py-1 bg-neo-mint hover:bg-emerald-400 text-ink border-2 border-ink font-headline font-black text-[11px] uppercase shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition">
+                  Booking
+                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Chat Controls & Input -->
+<div class="pt-2 border-t-2 border-ink space-y-2">
+<!-- Quick Action Chips -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] font-headline font-bold">
+<button class="px-2 py-1 bg-white hover:bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink shrink-0 transition flex items-center gap-1">
+<span>📅</span> Cari slot kosong
+            </button>
+<button class="px-2 py-1 bg-white hover:bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink shrink-0 transition flex items-center gap-1">
+<span>⚡</span> Reschedule rapat
+            </button>
+<button class="px-2 py-1 bg-white hover:bg-neo-yellow border-2 border-ink shadow-brutal-sm text-ink shrink-0 transition flex items-center gap-1">
+<span>📊</span> Analisis produktivitas
+            </button>
+</div>
+<!-- Chat Text Input Box -->
+<form class="relative flex items-center" id="chat-form" onsubmit="event.preventDefault();">
+<input class="w-full pl-3 pr-12 py-2.5 text-xs font-sans font-medium bg-[#faf7f2] text-ink placeholder-ink/50 border-2 border-ink focus:outline-none focus:bg-white shadow-brutal-sm" id="chat-input" placeholder="Instruksikan AI, e.g. 'Atur meeting besok jam 10 pagi'..." type="text"/>
+<button class="absolute right-1.5 p-1.5 bg-neo-yellow hover:bg-yellow-300 text-ink border-2 border-ink shadow-brutal-sm transition hover:scale-105 active:scale-95" title="Kirim pesan" type="submit">
+<svg class="w-4 h-4 transform rotate-90 stroke-[2.5]" fill="currentColor" viewbox="0 0 20 20">
+<path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+</svg>
+</button>
+</form>
+</div>
+</div>
+<!-- END: AI Calendar Assistant Chat -->
+</aside>
+<!-- END: KOLOM KANAN -->
+</div>
+<!-- END: Desktop Layout Wrapper -->
+</main>
+<!-- END: Main Application Container -->
+<!-- BEGIN: Interactive Scripts -->
+<script data-purpose="modal-and-chat-interaction">
+  // Toggle Modal Dialog
+  const modal = document.getElementById('event-modal');
+  const openModalBtn = document.getElementById('open-modal-btn');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+
+  if (openModalBtn && modal && closeModalBtn) {
+    openModalBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      modal.classList.add('block');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  }
+
+  // AI Chat Quick Send Mock
+  const chatForm = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
+  const chatStream = document.getElementById('chat-stream');
+
+  if (chatForm && chatInput && chatStream) {
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+
+      // Add user bubble
+      const userDiv = document.createElement('div');
+      userDiv.className = 'flex items-start justify-end gap-2';
+      userDiv.innerHTML = `
+        <div class="p-3 bg-neo-blue text-white border-2 border-ink shadow-brutal-sm max-w-[85%] font-headline font-bold leading-snug text-xs">
+          ${msg}
+        </div>
+      `;
+      chatStream.appendChild(userDiv);
+      chatInput.value = '';
+      chatStream.scrollTop = chatStream.scrollHeight;
+
+      // Auto AI simulated reply
+      setTimeout(() => {
+        const aiDiv = document.createElement('div');
+        aiDiv.className = 'flex items-start gap-2';
+        aiDiv.innerHTML = `
+          <div class="w-6 h-6 bg-neo-blue text-white border-2 border-ink shrink-0 font-mono font-bold text-[10px] flex items-center justify-center shadow-brutal-sm">
+            AI
+          </div>
+          <div class="p-3 bg-[#faf7f2] border-2 border-ink shadow-brutal-sm text-ink max-w-[90%] font-sans leading-snug">
+            Permintaan Anda "<span class="font-bold underline">${msg}</span>" sedang diproses oleh AI Assistant. Slot kalender telah diperbarui!
+          </div>
+        `;
+        chatStream.appendChild(aiDiv);
+        chatStream.scrollTop = chatStream.scrollHeight;
+      }, 500);
+    });
+  }
+</script>
+<!-- END: Interactive Scripts -->
+</body></html>
