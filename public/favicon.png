@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Background Container -->
+  <rect width="512" height="512" rx="100" fill="#F4F4F0" />
+  
+  <!-- Subtle Bauhaus Grid pattern in background -->
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#E2E2DC" stroke-width="1.5" />
+    </pattern>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#grid)" />
+
+  <!-- Hard Shadow for Main Calendar Body -->
+  <rect x="110" y="110" width="310" height="310" rx="28" fill="#1A1A1A" />
+
+  <!-- Main Calendar Body Base -->
+  <rect x="96" y="96" width="310" height="310" rx="28" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="12" stroke-linejoin="round" />
+
+  <!-- Calendar Header Strip (Bauhaus Yellow) -->
+  <path d="M 96 124 C 96 108.536 108.536 96 124 96 L 378 96 C 393.464 96 406 108.536 406 124 L 406 180 L 96 180 Z" fill="#FACC15" stroke="#1A1A1A" stroke-width="12" stroke-linejoin="round" />
+
+  <!-- Binder Rings / Hanging tabs -->
+  <!-- Ring 1 -->
+  <rect x="160" y="68" width="28" height="56" rx="8" fill="#1A1A1A" />
+  <rect x="166" y="74" width="16" height="44" rx="4" fill="#FFFFFF" />
+  <!-- Ring 2 -->
+  <rect x="314" y="68" width="28" height="56" rx="8" fill="#1A1A1A" />
+  <rect x="320" y="74" width="16" height="44" rx="4" fill="#FFFFFF" />
+
+  <!-- Calendar Grid Slots / Cells -->
+  <!-- Row 1 -->
+  <rect x="134" y="214" width="44" height="44" rx="10" fill="#F4F4F0" stroke="#1A1A1A" stroke-width="6" />
+  <rect x="198" y="214" width="44" height="44" rx="10" fill="#10B981" stroke="#1A1A1A" stroke-width="6" />
+  <rect x="262" y="214" width="44" height="44" rx="10" fill="#EF4444" stroke="#1A1A1A" stroke-width="6" />
+
+  <!-- Row 2 -->
+  <rect x="134" y="278" width="44" height="44" rx="10" fill="#FACC15" stroke="#1A1A1A" stroke-width="6" />
+  <rect x="198" y="278" width="44" height="44" rx="10" fill="#F4F4F0" stroke="#1A1A1A" stroke-width="6" />
+
+  <!-- Row 3 -->
+  <rect x="134" y="342" width="44" height="44" rx="10" fill="#10B981" stroke="#1A1A1A" stroke-width="6" />
+
+  <!-- Large Interactive Event Pill in Grid -->
+  <g>
+    <!-- Pill shadow -->
+    <rect x="202" y="346" width="108" height="40" rx="10" fill="#1A1A1A" />
+    <!-- Pill body -->
+    <rect x="198" y="342" width="108" height="40" rx="10" fill="#2563EB" stroke="#1A1A1A" stroke-width="6" />
+    <circle cx="218" cy="362" r="5" fill="#FFFFFF" />
+    <line x1="234" y1="362" x2="288" y2="362" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- AI Spark / Starburst Badge (Floating on Top Right of Calendar) -->
+  <!-- Badge Shadow -->
+  <g transform="translate(10, 10)">
+    <circle cx="346" cy="274" r="54" fill="#1A1A1A" />
+  </g>
+  <!-- Badge Outer Ring -->
+  <circle cx="346" cy="274" r="54" fill="#2563EB" stroke="#1A1A1A" stroke-width="10" />
+
+  <!-- AI Spark Icon inside Badge -->
+  <!-- 4-point Geometric AI Star -->
+  <path d="M 346 238 C 346 258 334 274 310 274 C 334 274 346 290 346 310 C 346 290 358 274 382 274 C 358 274 346 258 346 238 Z" fill="#FACC15" stroke="#1A1A1A" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Small Accent Spark -->
+  <path d="M 374 238 C 374 246 368 252 358 252 C 368 252 374 258 374 266 C 374 258 380 252 390 252 C 380 252 374 246 374 238 Z" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3" stroke-linejoin="round" />
+
+  <!-- Tiny Bauhaus Dot Accent -->
+  <circle cx="316" cy="304" r="5" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="3" />
+</svg>
