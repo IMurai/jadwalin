@@ -26,9 +26,7 @@
   --shadow-brutal-reverse: -4px 4px 0px 0px #1a1a1a;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
