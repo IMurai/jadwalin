@@ -233,7 +233,7 @@ export default function WeekView({
                         />
                       ))}
                       {dayEvents.length === 0 && (
-                        <button className="w-full h-full border-2 border-solid border-ink/40 bg-[#f9f9f8] hover:bg-neo-yellow/30 hover:border-ink flex items-center justify-center font-headline font-bold text-xs text-ink/70 transition">
+                        <button className="w-full h-full border border-solid border-ink/30 bg-[#f9f9f8] hover:bg-neo-yellow/30 hover:border-ink flex items-center justify-center font-headline font-bold text-xs text-ink/70 transition">
                            +
                         </button>
                       )}
