@@ -104,12 +104,12 @@ export default function WeekView({
   return (
     <>
       {/* Decorative Bauhaus Header Tag */}
-      <div className="flex items-center justify-between pb-3 mb-2 border-b-2 border-ink text-xs font-mono font-bold tracking-widest uppercase">
-        <span className="bg-neo-yellow px-2 py-0.5 border-2 border-ink shadow-brutal-sm flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-ink inline-block"></span>
+      <div className="flex items-center justify-between pb-3 mb-2 border-b-2 border-ink text-sm font-mono font-bold tracking-widest uppercase">
+        <span className="bg-neo-yellow px-2.5 py-1 border-2 border-ink shadow-brutal-sm flex items-center gap-2 text-base">
+          <span className="w-2.5 h-2.5 bg-ink inline-block"></span>
           JADWALIN AI CALENDER
         </span>
-        <span className="text-ink/60">AUTOSYNC: COOKIE_STORAGE_ACTIVE</span>
+        <span className="text-xs text-ink/60">AUTOSYNC: COOKIE_STORAGE_ACTIVE</span>
       </div>
 
       {/* Header Toolbar */}
