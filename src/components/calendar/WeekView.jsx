@@ -107,7 +107,7 @@ export default function WeekView({
       <div className="flex items-center justify-between pb-3 mb-2 border-b-2 border-ink text-xs font-mono font-bold tracking-widest uppercase">
         <span className="bg-neo-yellow px-2 py-0.5 border-2 border-ink shadow-brutal-sm flex items-center gap-1.5">
           <span className="w-2 h-2 bg-ink inline-block"></span>
-          SYS.CALENDAR // BAUHAUS EDITION
+          JADWALIN AI CALENDER
         </span>
         <span className="text-ink/60">AUTOSYNC: COOKIE_STORAGE_ACTIVE</span>
       </div>
