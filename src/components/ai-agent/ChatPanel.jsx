@@ -33,7 +33,7 @@ export default function ChatPanel({ messages, isLoading, error, onSendMessage, o
           </div>
           <div>
             <h4 className="font-headline font-black text-xs text-ink uppercase flex items-center gap-1.5">
-              AI Schedule Agent
+              JadwalIn AI Calender
               <span className="bg-neo-yellow text-ink border border-ink px-1 font-mono text-[9px] font-bold">PRO</span>
             </h4>
             <p className="font-mono text-[10px] font-bold text-ink/80 flex items-center gap-1">
