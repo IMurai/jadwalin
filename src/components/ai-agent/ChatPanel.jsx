@@ -33,7 +33,7 @@ export default function ChatPanel({ messages, isLoading, error, onSendMessage, o
           </div>
           <div>
             <h4 className="font-headline font-black text-xs text-ink uppercase flex items-center gap-1.5">
-              JadwalIn AI Calender
+              Aijin
               <span className="bg-neo-yellow text-ink border border-ink px-1 font-mono text-[9px] font-bold">PRO</span>
             </h4>
             <p className="font-mono text-[10px] font-bold text-ink/80 flex items-center gap-1">
@@ -61,7 +61,7 @@ export default function ChatPanel({ messages, isLoading, error, onSendMessage, o
               AI
             </div>
             <div className="chat-bubble-ai">
-              Halo! Saya siap membantu mengatur jadwal Anda. Coba tanyakan:
+              Halo! Saya Aijin, siap membantu mengatur jadwal Anda. Coba tanyakan:
               <ul className="mt-2 ml-4 list-disc space-y-1 text-xs">
                 <li>"Cari slot kosong besok sore untuk belajar 1 jam"</li>
                 <li>"Tambah jadwal futsal hari Senin jam 16:00"</li>

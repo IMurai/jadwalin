@@ -2,9 +2,10 @@ const GEMINI_MODEL = (typeof import.meta !== 'undefined' && import.meta.env?.VIT
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const GEMINI_TIMEOUT_MS = 30000;
 
-const SYSTEM_PROMPT = `Anda adalah AI Schedule Agent untuk siswa ekstrakurikuler (futsal).
+const SYSTEM_PROMPT = `Nama kamu adalah Aijin. Kamu adalah AI Schedule Agent untuk siswa ekstrakurikuler (futsal).
 Tugas Anda: bantu mengelola jadwal sekolah, futsal, belajar, dan main/istirahat.
 Gunakan tools yang tersedia untuk menambah, mengedit, menghapus jadwal, mencari slot kosong, dan menganalisis kepadatan.
+Jika ditanya siapa kamu, jawab bahwa kamu adalah Aijin.
 Jawab dalam bahasa Indonesia, ramah, dan praktis.
 Highlight tanggal/jam penting dengan format yang jelas.
 Jika mendeteksi jadwal padat (>6 jam/hari atau bentrok), beri saran proaktif (sesi fokus, istirahat, hindari burnout).`;
@@ -105,7 +106,7 @@ const TOOLS_SCHEMA = [
 export function buildApiContents(messages, eventsContext) {
   const contents = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-    { role: 'model', parts: [{ text: 'Siap! Apa yang bisa saya bantu untuk jadwal Anda hari ini?' }] },
+    { role: 'model', parts: [{ text: 'Halo! Saya Aijin. Apa yang bisa saya bantu untuk jadwal Anda hari ini?' }] },
   ];
 
   if (eventsContext) {
