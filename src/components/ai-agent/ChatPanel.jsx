@@ -34,7 +34,6 @@ export default function ChatPanel({ messages, isLoading, error, onSendMessage, o
           <div>
             <h4 className="font-headline font-black text-xs text-ink uppercase flex items-center gap-1.5">
               Aijin
-              <span className="bg-neo-yellow text-ink border border-ink px-1 font-mono text-[9px] font-bold">PRO</span>
             </h4>
             <p className="font-mono text-[10px] font-bold text-ink/80 flex items-center gap-1">
               <span className="w-2 h-2 bg-neo-mint border border-ink inline-block"></span>
